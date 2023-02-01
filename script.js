@@ -71,7 +71,7 @@ const displayMovements = function (movements) {
     <div class="movements__type movements__type--${type}">${
       i + 1
     }  ${type}</div>
-    <div class="movements__value">${mov}</div>
+    <div class="movements__value">${mov}&#8364</div>
   </div>`;
     // hena be5alena n7ot al resultdah m3 al html text gwa al app fo2 aly kan mktob bs gwa al parent movements
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -106,34 +106,42 @@ btnLogin.addEventListener('click', function (e) {
     //display movements
     //display balance
     //display summary
+    inputLoginUsername.value = '';
+    inputLoginPin.value = '';
+    inputLoginPin.blur();
+    displayMovements(currentAccount.movements);
+    calcPrintBalance(currentAccount.movements);
+    Displayall(currentAccount);
   }
 });
-console.log('hello there');
+
 const calcPrintBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = `${balance} EUR`;
   // console.log(balance);
 };
 calcPrintBalance(account2.movements);
-const Displayall = function (movements) {
-  const sumofincome = movements
+
+const Displayall = function (acc) {
+  const sumofincome = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr, 0);
-  labelSumIn.textContent = `${sumofincome}E`;
+  labelSumIn.textContent = `${sumofincome}Euro`;
 
-  const out = movements
+  const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, curr) => acc + curr, 0);
-  labelSumOut.textContent = `${Math.abs(out)}`;
-  const interest = movements
+  labelSumOut.textContent = `${Math.abs(out)}Euro`;
+
+  const interest = acc.movements
     .filter(mov => mov > 0)
-    .map(mov => (mov * 1.2) / 100)
+    .map(mov => (mov * acc.interestRate) / 100)
     .filter((int, i, arr) => int >= 1)
     .reduce((acc, curr) => acc + curr, 0);
-  labelSumInterest.textContent = `${interest}E`;
+  labelSumInterest.textContent = `${interest}Euro`;
 };
 
-Displayall(account1.movements);
+Displayall(account1);
 
 // for (const user of username) {
 //   const initials = user.slice(0, 1);
