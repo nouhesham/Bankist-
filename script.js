@@ -77,7 +77,7 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
-displayMovements(account1.movements);
+
 const createUsername = function (accounts) {
   accounts.forEach(function (accounts) {
     accounts.username = accounts.owner
@@ -90,6 +90,7 @@ const createUsername = function (accounts) {
 createUsername(accounts);
 //event listeners
 let currentAccount;
+
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -110,17 +111,16 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginPin.value = '';
     inputLoginPin.blur();
     displayMovements(currentAccount.movements);
-    calcPrintBalance(currentAccount.movements);
+    calcPrintBalance(currentAccount);
     Displayall(currentAccount);
   }
 });
 
-const calcPrintBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcPrintBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance} EUR`;
   // console.log(balance);
 };
-calcPrintBalance(account2.movements);
 
 const Displayall = function (acc) {
   const sumofincome = acc.movements
@@ -142,6 +142,24 @@ const Displayall = function (acc) {
 };
 
 Displayall(account1);
+btnTransfer.addEventListener('click', function (e) {
+  //to prevent it from reloading again
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const recieveraccount = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+  if (
+    amount <= currentAccount.balance &&
+    recieveraccount?.username &&
+    amount > 0 &&
+    recieveraccount.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    recieveraccount.balance.push(+amount);
+    calcPrintBalance(account2.movements);
+  }
+});
 
 // for (const user of username) {
 //   const initials = user.slice(0, 1);
