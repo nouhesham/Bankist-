@@ -32,8 +32,7 @@ const account4 = {
   interestRate: 1,
   pin: 4444,
 };
-const hello = account1.movements.includes(200);
-console.log(hello0);
+
 const accounts = [account1, account2, account3, account4];
 
 // Elements
@@ -161,6 +160,19 @@ btnTransfer.addEventListener('click', function (e) {
     calcPrintBalance(account2.movements);
   }
 });
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const loanAmount = Number(inputLoanAmount.value);
+  if (
+    currentAccount.movements.some(mov => mov > 0) &&
+    currentAccount.movements.some(mov => mov > 0.1 * loanAmount) &&
+    loanAmount > 0
+  ) {
+    currentAccount.movements.push(+loanAmount);
+    displayMovements(currentAccount.movements);
+  }
+});
+
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
   const account = inputCloseUsername.value;
