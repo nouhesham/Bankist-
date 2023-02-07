@@ -32,7 +32,8 @@ const account4 = {
   interestRate: 1,
   pin: 4444,
 };
-
+const hello = account1.movements.includes(200);
+console.log(hello0);
 const accounts = [account1, account2, account3, account4];
 
 // Elements
@@ -159,6 +160,23 @@ btnTransfer.addEventListener('click', function (e) {
     recieveraccount.balance.push(+amount);
     calcPrintBalance(account2.movements);
   }
+});
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+  const account = inputCloseUsername.value;
+  const pin = Number(inputClosePin.value);
+
+  if (pin === currentAccount.pin && account === currentAccount.username) {
+    const closeaccount = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    console.log(closeaccount);
+    accounts.splice(closeaccount, 1);
+    containerApp.style.opacity = 0;
+    inputClosePin.value = '';
+    inputCloseUsername.value = '';
+  }
+  console.log(accounts);
 });
 
 // for (const user of username) {
