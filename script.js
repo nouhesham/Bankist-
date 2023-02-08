@@ -60,6 +60,11 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
+const updateUi = function (account) {
+  displayMovements(account.movements);
+  calcPrintBalance(account);
+  Displayall(account);
+};
 
 const displayMovements = function (movements) {
   //hena bems7 aly kan mktob gwa al html asln
@@ -110,9 +115,7 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = '';
     inputLoginPin.value = '';
     inputLoginPin.blur();
-    displayMovements(currentAccount.movements);
-    calcPrintBalance(currentAccount);
-    Displayall(currentAccount);
+    updateUi(currentAccount);
   }
 });
 
@@ -158,19 +161,22 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     recieveraccount.balance.push(+amount);
     calcPrintBalance(account2.movements);
+    displayMovements(currentAccount.movements);
   }
 });
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
   const loanAmount = Number(inputLoanAmount.value);
+  //see if the condiditon is true then apply the loan
   if (
     currentAccount.movements.some(mov => mov > 0) &&
     currentAccount.movements.some(mov => mov > 0.1 * loanAmount) &&
     loanAmount > 0
   ) {
     currentAccount.movements.push(+loanAmount);
-    displayMovements(currentAccount.movements);
+    updateUi(currentAccount);
   }
+  inputLoanAmount.value = '';
 });
 
 btnClose.addEventListener('click', function (e) {
@@ -332,3 +338,10 @@ const calcAverage = ages =>
 
 const avg1 = calcAverage([16, 6, 10, 5, 6, 1, 4]);
 console.log(avg1);
+
+//every method
+//every element applies that condition ====true
+console.log(movements.every(mov => mov > 1));
+//separet call back
+const deposit = mov => mov > 0;
+console.log(movements.some(deposit));
