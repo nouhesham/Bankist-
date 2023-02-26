@@ -66,10 +66,11 @@ const updateUi = function (account) {
   Displayall(account);
 };
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   //hena bems7 aly kan mktob gwa al html asln
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `<div class="movements__row">
@@ -92,6 +93,7 @@ const createUsername = function (accounts) {
       .join('');
   });
 };
+
 createUsername(accounts);
 //event listeners
 let currentAccount;
@@ -195,6 +197,12 @@ btnClose.addEventListener('click', function (e) {
     inputCloseUsername.value = '';
   }
   console.log(accounts);
+});
+let sorte = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorte);
+  sorte = !sorte;
 });
 
 // for (const user of username) {
