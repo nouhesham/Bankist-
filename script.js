@@ -353,3 +353,22 @@ console.log(movements.every(mov => mov > 1));
 //separet call back
 const deposit = mov => mov > 0;
 console.log(movements.some(deposit));
+//forming a new array
+const newarray = new Array(7);
+console.log(newarray.fill(4, 4));
+const z = Array.from({ length: 7 }, () => 2);
+console.log(z);
+//forming 100 randome dicerolls
+const diceroll = Array.from({ length: 100 }, () =>
+  Math.floor(Math.random() * 101)
+);
+console.log(diceroll);
+
+labelBalance.addEventListener('click', function () {
+  const movementsui = Array.from(
+    document.querySelectorAll('.movements__value')
+  );
+  console.log(
+    movementsui.map(element => Number(element.textContent.replace('€', ' ')))
+  );
+});
