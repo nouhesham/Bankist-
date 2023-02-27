@@ -372,3 +372,8 @@ labelBalance.addEventListener('click', function () {
     movementsui.map(element => Number(element.textContent.replace('€', ' ')))
   );
 });
+
+const movies = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, curr, i) => i + 1, 1000);
+console.log(movies);
